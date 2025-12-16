@@ -115,10 +115,6 @@
             box-shadow: 0 4px 8px var(--shadow);
         }
 
-        .mobile-menu-btn:hover {
-            background: var(--accent-hover);
-        }
-
         .category {
             margin-bottom: 30px;
         }
@@ -306,12 +302,19 @@
             margin-bottom: 15px;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
 
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
                 left: -100%;
@@ -335,50 +338,6 @@
 
             .content-area {
                 padding: 80px 20px 20px;
-            }
-
-            .welcome h1 {
-                font-size: 28px;
-            }
-
-            .welcome p {
-                font-size: 16px;
-            }
-
-            .submenu, .reader {
-                padding: 20px;
-            }
-
-            .submenu h2 {
-                font-size: 24px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .sidebar {
-                width: 100%;
-                max-width: 100%;
-            }
-
-            .author-avatar {
-                width: 40px;
-                height: 40px;
-            }
-
-            .author-name {
-                font-size: 13px;
-            }
-
-            .author-dates {
-                font-size: 11px;
-            }
-
-            .welcome h1 {
-                font-size: 24px;
-            }
-
-            .reader, .submenu {
-                padding: 15px;
             }
         }
 
@@ -406,7 +365,7 @@
         <div class="content-area" id="contentArea">
             <div class="welcome">
                 <h1>Un site dédié au christianisme primitif</h1>
-                <p>Explorez une collection de textes chrétiens et sources historiques. Sélectionnez un auteur dans la barre latérale pour commencer votre lecture. Ce site a pour vocation de rassembler et de rendre accessibles l'ensemble des documents relatifs aux origines du christianisme. Vous y trouverez des sources variées, qu'elles soient chrétiennes, païennes, juives ou encore apocryphes.  Ces dernières, bien qu'exclues du canon actuel, présentent un intérêt certain pour l'étude biblique. En effet, certaines sont mentionnées, même brièvement, dans les textes reconnus, ou ont été acceptées par une partie des premières communautés chrétiennes.</p>
+                <p>Explorez une collection de textes chrétiens et sources historiques. Sélectionnez un auteur dans la barre latérale pour commencer votre lecture.</p>
             </div>
         </div>
     </div>
@@ -421,9 +380,21 @@
                     bio: "Historien juif romano-hellénistique, témoin de la prise de Jérusalem",
                     subcategories: {
                         "Antiquités judaïques (Testimonium Flavianum) :: en l'an ~93": [
-                            { title: "Livre XVIII - sur Jésus ", description: "Référence à Jésus-Christ" },
-                            { title: "Livre XVIII - sur Saint Jean le Baptiste", description: "Référence à Jean le Baptiste, cousin de Jésus" },
-                            { title: "Livre XX - sur Jacques", description: "Référence à Jacques, frère de Jésus" }
+                            { 
+                                title: "Livre XVIII - sur Jésus", 
+                                description: "Référence à Jésus-Christ",
+                                file: "texts/josephus_jesus.html"
+                            },
+                            { 
+                                title: "Livre XVIII - sur Saint Jean le Baptiste", 
+                                description: "Référence à Jean le Baptiste",
+                                file: "texts/josephus_jean.html"
+                            },
+                            { 
+                                title: "Livre XX - sur Jacques", 
+                                description: "Référence à Jacques, frère de Jésus",
+                                file: "texts/josephus_jacques.html"
+                            }
                         ]
                     }
                 }
@@ -433,13 +404,14 @@
                     name: "Clément de Rome",
                     dates: "18 - 98 apr. J.-C.",
                     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
-                    bio: "???",
+                    bio: "Évêque de Rome, auteur de lettres aux communautés chrétiennes",
                     subcategories: {
                         "Clément de Rome :: en l'an 96": [
-                            { title: "Première Épître aux Corinthiens", description: "?" }
-                        ],
-                        "Pseudo-Clément de Rome :: en l'an ~100 - 140": [
-                            { title: "Seconde Épître aux Corinthiens", description: "?" }
+                            { 
+                                title: "Première Épître aux Corinthiens", 
+                                description: "Lettre pastorale",
+                                file: "texts/clement_1corinthiens.html"
+                            }
                         ]
                     }
                 }
@@ -452,29 +424,19 @@
                     bio: "Textes non canoniques de la tradition chrétienne",
                     subcategories: {
                         "Évangiles apocryphes": [
-                            { title: "Évangile selon Thomas :: en l'an 135 - 200", description: "Collection de paroles attribuées à Jésus" }
-                        ],
-                        "Actes apocryphes": [
-                            { title: "Actes de Jean", description: "?" }
-                        ],
-                        "Épîtres apocryphes": [
-                            { title: "Seconde Épître de Clément :: en l'an 100 - 140", description: "?" }
-                        ],
-                        "Apocalypses apocryphes": [
-                            { title: "Apocalypse de Pierre", description: "?" }
-                        ],   
-                        "Autres apocryphes": [
-                            { title: "Odes de Salomon :: en l'an 100 - 150", description: "?" }
-                        ] 
+                            { 
+                                title: "Évangile selon Thomas :: en l'an 135 - 200", 
+                                description: "Collection de paroles attribuées à Jésus",
+                                file: "texts/evangile_thomas.html"
+                            }
+                        ]
                     }
                 }
             ]
         };
 
         let selectedAuthor = null;
-        let selectedBook = null;
 
-        // Gestion du thème
         function initTheme() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             if (savedTheme === 'dark') {
@@ -488,19 +450,14 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
-        // Gestion du menu mobile
         function toggleMobileSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
         }
 
         function closeMobileSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('show');
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
         }
 
         function renderSidebar() {
@@ -541,7 +498,6 @@
 
                     authorItem.onclick = () => {
                         selectedAuthor = author;
-                        selectedBook = null;
                         renderSidebar();
                         showAuthorMenu(author);
                         closeMobileSidebar();
@@ -569,9 +525,11 @@
                         <div class="book-list">
                 `;
 
-                books.forEach(book => {
+                books.forEach((book, index) => {
+                    const bookData = encodeURIComponent(JSON.stringify(book));
+                    const authorData = encodeURIComponent(author.name);
                     html += `
-                        <div class="book-item" onclick="showBook('${author.name}', '${book.title}', '${book.description}')">
+                        <div class="book-item" onclick='loadBook(${JSON.stringify(book)}, "${author.name}")'>
                             <div class="book-title">${book.title}</div>
                             <div class="book-description">${book.description}</div>
                         </div>
@@ -588,21 +546,45 @@
             contentArea.innerHTML = html;
         }
 
-        function showBook(authorName, bookTitle, bookDescription) {
+        async function loadBook(book, authorName) {
             const contentArea = document.getElementById('contentArea');
+            
             contentArea.innerHTML = `
                 <div class="reader">
-                    <button class="back-btn" onclick="backToAuthor()">← Retour</button>
-                    <h2>${bookTitle}</h2>
-                    <p style="color: var(--text-secondary); margin-bottom: 30px;">Par ${authorName}</p>
-                    <div class="reader-content">
-                        <p><em>${bookDescription}</em></p>
-                        <p>Le contenu complet du texte apparaîtrait ici. Ceci est un exemple de lecteur où vous pourriez afficher le texte intégral du document sélectionné.</p>
-                        <p>Vous pouvez formater le contenu avec des paragraphes, des citations, des notes de bas de page et tout autre élément nécessaire pour une lecture agréable et académique.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    </div>
+                    <div class="loading">Chargement...</div>
                 </div>
             `;
+
+            try {
+                const response = await fetch(book.file);
+                if (!response.ok) {
+                    throw new Error('Fichier non trouvé');
+                }
+                const content = await response.text();
+                
+                contentArea.innerHTML = `
+                    <div class="reader">
+                        <button class="back-btn" onclick="backToAuthor()">← Retour</button>
+                        <h2>${book.title}</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 30px;">Par ${authorName}</p>
+                        <div class="reader-content">
+                            ${content}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                contentArea.innerHTML = `
+                    <div class="reader">
+                        <button class="back-btn" onclick="backToAuthor()">← Retour</button>
+                        <div class="error">
+                            <h2>Erreur de chargement</h2>
+                            <p>Le fichier "${book.file}" n'a pas pu être chargé.</p>
+                            <p style="font-size: 14px; margin-top: 20px;">Assurez-vous que le fichier existe dans le bon dossier.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
             closeMobileSidebar();
         }
 
@@ -612,7 +594,6 @@
             }
         }
 
-        // Initialisation
         initTheme();
         renderSidebar();
     </script>
